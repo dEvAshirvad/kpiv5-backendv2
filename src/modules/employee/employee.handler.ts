@@ -148,13 +148,14 @@ export class EmployeeHandler {
   static async getEmployeesByDepartment(req: Request, res: Response) {
     try {
       const { department } = req.params;
-      const { page, limit } = req.query;
+      const { page, limit, search } = req.query;
 
       const employees = await EmployeeService.getEmployeesByDepartment(
         department,
         {
           page: page ? parseInt(page as string) : 1,
           limit: limit ? parseInt(limit as string) : 10,
+          search: search as string,
         }
       );
       Respond(
@@ -175,13 +176,14 @@ export class EmployeeHandler {
   static async getEmployeesByDepartmentRole(req: Request, res: Response) {
     try {
       const { departmentRole } = req.params;
-      const { page, limit } = req.query;
+      const { page, limit, search } = req.query;
 
       const employees = await EmployeeService.getEmployeesByDepartmentRole(
         departmentRole,
         {
           page: page ? parseInt(page as string) : 1,
           limit: limit ? parseInt(limit as string) : 10,
+          search: search as string,
         }
       );
       Respond(

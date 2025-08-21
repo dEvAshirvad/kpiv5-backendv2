@@ -104,15 +104,28 @@ export class EmployeeService {
     {
       page = 1,
       limit = 10,
+      search = '',
     }: {
       page?: number;
       limit?: number;
+      search?: string;
     }
   ) {
     try {
+      const searchQuery = search
+        ? {
+            $or: [
+              { name: { $regex: search, $options: 'i' } },
+              { 'contact.email': { $regex: search, $options: 'i' } },
+              { 'contact.phone': { $regex: search, $options: 'i' } },
+            ],
+          }
+        : {};
       const [employees, total] = await Promise.all([
-        EmployeeModal.find({ department }).sort({ createdAt: -1 }).lean(),
-        EmployeeModal.countDocuments({ department }),
+        EmployeeModal.find({ department, ...searchQuery })
+          .sort({ createdAt: -1 })
+          .lean(),
+        EmployeeModal.countDocuments({ department, ...searchQuery }),
       ]);
 
       return {
@@ -135,15 +148,28 @@ export class EmployeeService {
     {
       page = 1,
       limit = 10,
+      search = '',
     }: {
       page?: number;
       limit?: number;
+      search?: string;
     }
   ) {
     try {
+      const searchQuery = search
+        ? {
+            $or: [
+              { name: { $regex: search, $options: 'i' } },
+              { 'contact.email': { $regex: search, $options: 'i' } },
+              { 'contact.phone': { $regex: search, $options: 'i' } },
+            ],
+          }
+        : {};
       const [employees, total] = await Promise.all([
-        EmployeeModal.find({ departmentRole }).sort({ createdAt: -1 }).lean(),
-        EmployeeModal.countDocuments({ departmentRole }),
+        EmployeeModal.find({ departmentRole, ...searchQuery })
+          .sort({ createdAt: -1 })
+          .lean(),
+        EmployeeModal.countDocuments({ departmentRole, ...searchQuery }),
       ]);
 
       return {
