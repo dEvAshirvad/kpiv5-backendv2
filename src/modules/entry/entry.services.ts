@@ -17,32 +17,9 @@ export class EntryService {
         });
       }
 
-      // Auto-generate kpiNames from template if they're missing or incomplete
-      let finalKpiNames = entry.kpiNames;
-      if (!entry.kpiNames || entry.kpiNames.length === 0) {
-        // If no kpiNames provided, generate from template
-        finalKpiNames = template.template.map((kpi) => ({
-          label: kpi.name,
-          value: '',
-        }));
-      } else {
-        // Validate and complete kpiNames against template
-        const templateKpiNames = template.template.map((kpi) => kpi.name);
-        const entryKpiNames = entry.kpiNames.map((kpi) => kpi.label);
-
-        const missingKpis = templateKpiNames.filter(
-          (name) => !entryKpiNames.includes(name)
-        );
-
-        if (missingKpis.length > 0) {
-          // Add missing KPIs to the kpiNames array
-          const missingKpiNames = missingKpis.map((name) => ({
-            label: name,
-            value: '',
-          }));
-          finalKpiNames = [...entry.kpiNames, ...missingKpiNames];
-        }
-      }
+      // Use kpiNames as provided - no validation against template
+      // kpiNames are used for uniqueness to allow multiple entries for same employee in same month
+      const finalKpiNames = entry.kpiNames || [];
 
       // Calculate scores automatically based on template maxMarks
       const calculatedValues = entry.values.map((entryValue) => {
@@ -609,11 +586,8 @@ export class EntryService {
         });
       }
 
-      // Create new entry with template structure
-      const kpiNames = template.template.map((kpi) => ({
-        label: kpi.name,
-        value: '',
-      }));
+      // Create new entry with empty kpiNames - should be provided by user for uniqueness
+      const kpiNames: Array<{ label: string; value?: string }> = [];
 
       const values = template.template.map((kpi) => {
         // Ensure kpi.name exists and is a string

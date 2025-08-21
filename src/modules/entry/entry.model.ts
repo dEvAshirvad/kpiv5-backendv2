@@ -158,8 +158,18 @@ const entrySchema = new mongoose.Schema<Entry>(
   }
 );
 
-// Compound unique index for month, year, and kpiNames
-entrySchema.index({ month: 1, year: 1, 'kpiNames.label': 1 }, { unique: true });
+// Compound unique index for employee, month, year, and kpiNames
+// This allows multiple entries for same employee in same month with different KPI names
+entrySchema.index(
+  {
+    employeeId: 1,
+    month: 1,
+    year: 1,
+    'kpiNames.label': 1,
+    'kpiNames.value': 1,
+  },
+  { unique: true }
+);
 
 // Index for efficient queries
 entrySchema.index({ employeeId: 1, templateId: 1 });
