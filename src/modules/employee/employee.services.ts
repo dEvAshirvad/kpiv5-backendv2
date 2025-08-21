@@ -99,24 +99,62 @@ export class EmployeeService {
   }
 
   // Get employees by department
-  static async getEmployeesByDepartment(department: string) {
+  static async getEmployeesByDepartment(
+    department: string,
+    {
+      page = 1,
+      limit = 10,
+    }: {
+      page?: number;
+      limit?: number;
+    }
+  ) {
     try {
-      const employees = await EmployeeModal.find({ department })
-        .sort({ name: 1 })
-        .lean();
-      return employees;
+      const [employees, total] = await Promise.all([
+        EmployeeModal.find({ department }).sort({ createdAt: -1 }).lean(),
+        EmployeeModal.countDocuments({ department }),
+      ]);
+
+      return {
+        docs: employees,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page < Math.ceil(total / limit),
+        hasPreviousPage: page > 1,
+      };
     } catch (error) {
       throw error;
     }
   }
 
   // Get employees by department role
-  static async getEmployeesByDepartmentRole(departmentRole: string) {
+  static async getEmployeesByDepartmentRole(
+    departmentRole: string,
+    {
+      page = 1,
+      limit = 10,
+    }: {
+      page?: number;
+      limit?: number;
+    }
+  ) {
     try {
-      const employees = await EmployeeModal.find({ departmentRole })
-        .sort({ name: 1 })
-        .lean();
-      return employees;
+      const [employees, total] = await Promise.all([
+        EmployeeModal.find({ departmentRole }).sort({ createdAt: -1 }).lean(),
+        EmployeeModal.countDocuments({ departmentRole }),
+      ]);
+
+      return {
+        docs: employees,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page < Math.ceil(total / limit),
+        hasPreviousPage: page > 1,
+      };
     } catch (error) {
       throw error;
     }

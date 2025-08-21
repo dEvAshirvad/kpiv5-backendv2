@@ -148,13 +148,19 @@ export class EmployeeHandler {
   static async getEmployeesByDepartment(req: Request, res: Response) {
     try {
       const { department } = req.params;
+      const { page, limit } = req.query;
 
-      const employees =
-        await EmployeeService.getEmployeesByDepartment(department);
+      const employees = await EmployeeService.getEmployeesByDepartment(
+        department,
+        {
+          page: page ? parseInt(page as string) : 1,
+          limit: limit ? parseInt(limit as string) : 10,
+        }
+      );
       Respond(
         res,
         {
-          employees,
+          ...employees,
           message: 'Department employees fetched successfully',
         },
         200
@@ -169,13 +175,19 @@ export class EmployeeHandler {
   static async getEmployeesByDepartmentRole(req: Request, res: Response) {
     try {
       const { departmentRole } = req.params;
+      const { page, limit } = req.query;
 
-      const employees =
-        await EmployeeService.getEmployeesByDepartmentRole(departmentRole);
+      const employees = await EmployeeService.getEmployeesByDepartmentRole(
+        departmentRole,
+        {
+          page: page ? parseInt(page as string) : 1,
+          limit: limit ? parseInt(limit as string) : 10,
+        }
+      );
       Respond(
         res,
         {
-          employees,
+          ...employees,
           message: 'Department role employees fetched successfully',
         },
         200
