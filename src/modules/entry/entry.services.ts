@@ -62,8 +62,6 @@ export class EntryService {
 
         console.log('Template KPI:', {
           name: templateKpi.name,
-          isDynamic: templateKpi.isDynamic,
-          metric: templateKpi.metric,
           maxMarks: templateKpi.maxMarks,
         });
         console.log('Entry value:', entryValue);
@@ -324,8 +322,6 @@ export class EntryService {
 
           console.log('Template KPI:', {
             name: templateKpi.name,
-            isDynamic: templateKpi.isDynamic,
-            metric: templateKpi.metric,
             maxMarks: templateKpi.maxMarks,
           });
           console.log('Entry value:', entryValue);

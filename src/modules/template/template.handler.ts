@@ -13,6 +13,7 @@ export class TemplateHandler {
         role,
         frequency,
         departmentSlug,
+        kpiName,
         template,
         createdBy,
         updatedBy,
@@ -24,6 +25,7 @@ export class TemplateHandler {
         role,
         frequency,
         departmentSlug,
+        kpiName,
         template,
         createdBy,
         updatedBy,
@@ -166,6 +168,7 @@ export class TemplateHandler {
         role,
         frequency,
         departmentSlug,
+        kpiName,
         template,
         createdBy,
       } = req.body;
@@ -178,6 +181,7 @@ export class TemplateHandler {
         role,
         frequency,
         departmentSlug,
+        kpiName,
         template,
         createdBy,
       });

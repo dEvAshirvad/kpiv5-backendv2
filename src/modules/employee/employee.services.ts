@@ -1,5 +1,6 @@
 import APIError from '@/lib/errors/APIError';
 import { EmployeeModal, Employee } from './employee.model';
+import { FilterQuery } from 'mongoose';
 
 export class EmployeeService {
   static async createEmployee(
@@ -112,12 +113,13 @@ export class EmployeeService {
     }
   ) {
     try {
-      const searchQuery = search
+      const searchQuery: FilterQuery<Employee> = search
         ? {
             $or: [
               { name: { $regex: search, $options: 'i' } },
               { 'contact.email': { $regex: search, $options: 'i' } },
               { 'contact.phone': { $regex: search, $options: 'i' } },
+              { departmentRole: { $regex: search, $options: 'i' } },
             ],
           }
         : {};

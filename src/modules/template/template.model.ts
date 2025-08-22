@@ -7,6 +7,7 @@ const kpitemplateZodSchema = z.object({
   role: z.string().nonempty('Role is required'),
   frequency: z.enum(['daily', 'weekly', 'monthly', 'quarterly']),
   departmentSlug: z.string().nonempty('Department slug is required'),
+  kpiName: z.string().nonempty('KPI name is required'),
   template: z
     .array(
       z.object({
@@ -14,11 +15,9 @@ const kpitemplateZodSchema = z.object({
         description: z.string().nonempty('KPI description is required'),
         maxMarks: z.number().int().min(0, 'maxMarks must be non-negative'),
         kpiType: z.literal('percentage'),
-        metric: z.string().nonempty('Metric formula is required'),
         kpiUnit: z.literal('%', {
           errorMap: () => ({ message: "kpiUnit must be '%'" }),
         }),
-        isDynamic: z.boolean(),
         subKpis: z
           .array(
             z.object({
@@ -49,6 +48,7 @@ const kpitemplateVersionZodSchema = z.object({
   name: z.string().nonempty('Name is required'),
   description: z.string().nonempty('Description is required'),
   role: z.string().nonempty('Role is required'),
+  kpiName: z.string().nonempty('KPI name is required'),
   frequency: z.enum(['daily', 'weekly', 'monthly', 'quarterly']),
   departmentSlug: z.string().nonempty('Department slug is required'),
   template: z
@@ -58,7 +58,6 @@ const kpitemplateVersionZodSchema = z.object({
         description: z.string().nonempty('KPI description is required'),
         maxMarks: z.number().int().min(0, 'maxMarks must be non-negative'),
         kpiType: z.literal('percentage'),
-        metric: z.string().nonempty('Metric formula is required'),
         kpiUnit: z.literal('%', {
           errorMap: () => ({ message: "kpiUnit must be '%'" }),
         }),
@@ -126,10 +125,6 @@ const kpiTemplateItemSchema = new mongoose.Schema({
     enum: ['percentage'],
     default: 'percentage',
   },
-  metric: {
-    type: String,
-    required: true,
-  },
   kpiUnit: {
     type: String,
     enum: ['%'],
@@ -148,6 +143,10 @@ const kpiTemplateItemSchema = new mongoose.Schema({
 const kpiTemplateSchema = new mongoose.Schema<KPITemplate>(
   {
     name: {
+      type: String,
+      required: true,
+    },
+    kpiName: {
       type: String,
       required: true,
     },
