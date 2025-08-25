@@ -27,6 +27,8 @@ const allowedOrigins = [
   'https://urvi.rdmp.in',
   'http://69.62.77.63:6030',
   'http://69.62.77.63:6031',
+  'https://shresthv2.rdmp.in',
+  'https://kpiapiv2.rdmp.in',
 ];
 
 export function createRouter(): Express {
