@@ -126,6 +126,8 @@ export class EmployeeService {
       const [employees, total] = await Promise.all([
         EmployeeModal.find({ department, ...searchQuery })
           .sort({ createdAt: -1 })
+          .skip((page - 1) * limit)
+          .limit(limit)
           .lean(),
         EmployeeModal.countDocuments({ department, ...searchQuery }),
       ]);
@@ -170,6 +172,8 @@ export class EmployeeService {
       const [employees, total] = await Promise.all([
         EmployeeModal.find({ departmentRole, ...searchQuery })
           .sort({ createdAt: -1 })
+          .skip((page - 1) * limit)
+          .limit(limit)
           .lean(),
         EmployeeModal.countDocuments({ departmentRole, ...searchQuery }),
       ]);
