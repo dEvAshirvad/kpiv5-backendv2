@@ -46,6 +46,34 @@ export class EntryHandler {
     }
   }
 
+  // Get all department statistics with optional month/year (defaults: previous month, current year)
+  static async getAllDepartmentStats(req: Request, res: Response) {
+    try {
+      const { month, year } = req.query;
+
+      const result = await EntryService.getAllDepartmentStats({
+        month: month ? parseInt(month as string, 10) : undefined,
+        year: year ? parseInt(year as string, 10) : undefined,
+      });
+
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'All department statistics fetched successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getAllDepartmentStats:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        throw error;
+      }
+    }
+  }
+
   // Get entry by ID
   static async getEntryById(req: Request, res: Response) {
     try {
@@ -473,7 +501,7 @@ export class EntryHandler {
 
   static async getStatistics(req: Request, res: Response) {
     try {
-      const { department, role, month, year } = req.query;
+      const { department, role, month, year, page, limit } = req.query;
 
       // Parse query parameters
       const filters: any = {};
@@ -494,6 +522,14 @@ export class EntryHandler {
         filters.year = parseInt(year as string, 10);
       }
 
+      if (page) {
+        filters.page = parseInt(page as string, 10);
+      }
+
+      if (limit) {
+        filters.limit = parseInt(limit as string, 10);
+      }
+
       const statistics = await EntryService.getStatistics(filters);
       Respond(
         res,
@@ -506,6 +542,263 @@ export class EntryHandler {
     } catch (error) {
       logger.error('Error in getStatistics:', error);
       if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Generate KPI entries for a specific timeframe
+  static async generateKPIEntries(req: Request, res: Response) {
+    try {
+      const { month, year } = req.body;
+
+      if (!month || !year) {
+        return Respond(res, { message: 'Month and year are required' }, 400);
+      }
+
+      const result = await EntryService.generateKPIEntries(month, year);
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'KPI entries generated successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in generateKPIEntries:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Get WhatsApp ranking with employee contacts
+  static async getWhatsAppRanking(req: Request, res: Response) {
+    try {
+      const { department, role, month, year, status, page, limit } = req.query;
+
+      // Parse query parameters
+      const filters: any = {};
+
+      if (department) {
+        filters.department = department as string;
+      }
+
+      if (role) {
+        filters.role = role as string;
+      }
+
+      if (month) {
+        filters.month = parseInt(month as string, 10);
+      }
+
+      if (year) {
+        filters.year = parseInt(year as string, 10);
+      }
+
+      if (status) {
+        filters.status = status as string;
+      }
+
+      if (page) {
+        filters.page = parseInt(page as string, 10);
+      }
+
+      if (limit) {
+        filters.limit = parseInt(limit as string, 10);
+      }
+
+      const result = await EntryService.getWhatsAppRanking(filters);
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'WhatsApp ranking fetched successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getWhatsAppRanking:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Cleanup orphaned KPI entries
+  static async cleanupOrphanedEntries(req: Request, res: Response) {
+    try {
+      const result = await EntryService.cleanupOrphanedEntries();
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'Orphaned entries cleanup completed',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in cleanupOrphanedEntries:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Get orphaned entries report
+  static async getOrphanedEntriesReport(req: Request, res: Response) {
+    try {
+      const result = await EntryService.getOrphanedEntriesReport();
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'Orphaned entries report generated',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getOrphanedEntriesReport:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Get single user WhatsApp report
+  static async getSingleUserWhatsAppReport(req: Request, res: Response) {
+    try {
+      const { entryId } = req.params;
+
+      if (!entryId) {
+        return Respond(res, { message: 'Entry ID is required' }, 400);
+      }
+
+      const result = await EntryService.getSingleUserWhatsAppReport(entryId);
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'Single user WhatsApp report generated successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getSingleUserWhatsAppReport:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Get Nodal Officer Statistics
+  static async getNodalOfficerStats(req: Request, res: Response) {
+    try {
+      const { month, year } = req.query;
+
+      // Parse query parameters
+      const filters: any = {};
+
+      if (month) {
+        filters.month = parseInt(month as string, 10);
+      }
+
+      if (year) {
+        filters.year = parseInt(year as string, 10);
+      }
+
+      const statistics = await EntryService.getNodalOfficerStats(filters);
+      Respond(
+        res,
+        {
+          ...statistics,
+          message: 'Nodal Officer statistics fetched successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getNodalOfficerStats:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Get available filters for statistics
+  static async getAvailableFilters(req: Request, res: Response) {
+    try {
+      const { department, month, year } = req.query;
+
+      // Parse query parameters
+      const filters: any = {};
+
+      if (department) {
+        filters.department = department as string;
+      }
+
+      filters.month = parseInt(month as string, 10) || new Date().getMonth();
+
+      filters.year = parseInt(year as string, 10) || new Date().getFullYear();
+
+      const result = await EntryService.getAvailableFilters(filters);
+      Respond(
+        res,
+        {
+          ...result,
+          message: 'Available filters fetched successfully',
+        },
+        200
+      );
+    } catch (error) {
+      logger.error('Error in getAvailableFilters:', error);
+      if (error instanceof APIError) {
+        Respond(res, { message: error.message }, error.statusCode);
+      } else {
+        Respond(res, { message: 'Internal server error' }, 500);
+      }
+    }
+  }
+
+  // Generate PDF report for department
+  static async generateDepartmentPDF(req: Request, res: Response) {
+    try {
+      const { department } = req.params;
+      const { month, year } = req.query;
+
+      const result = await EntryService.generateDepartmentPDF(
+        department,
+        month ? parseInt(month as string, 10) : undefined,
+        year ? parseInt(year as string, 10) : undefined
+      );
+
+      // Set PDF headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${result.department}_Performance_Report_${result.month}_${result.year}.pdf"`
+      );
+      res.setHeader('Content-Length', result.pdfBuffer.length);
+
+      // Send PDF buffer
+      res.send(result.pdfBuffer);
+    } catch (error: any) {
+      logger.error('Error in generateDepartmentPDF:', error);
+      if (error.statusCode) {
         Respond(res, { message: error.message }, error.statusCode);
       } else {
         Respond(res, { message: 'Internal server error' }, 500);

@@ -14,8 +14,38 @@ router.get('/', EntryHandler.getAllEntries);
 router.get('/search', EntryHandler.searchEntries);
 
 // Statistics routes
-// GET /api/v1/entries/statistics - Get ranking and statistics data
+// GET /api/v1/entries/statistics - Get ranking and statistics data (Department and Role Required)
 router.get('/statistics', EntryHandler.getStatistics);
+
+// GET /api/v1/entries/all-department-stats - Get aggregated stats across all departments
+router.get('/all-department-stats', EntryHandler.getAllDepartmentStats);
+
+// GET /api/v1/entries/nodal-officer-stats - Get nodal officer statistics
+router.get('/nodal-officer-stats', EntryHandler.getNodalOfficerStats);
+
+// GET /api/v1/entries/available-filters - Get available filters for statistics
+router.get('/available-filters', EntryHandler.getAvailableFilters);
+
+// WhatsApp ranking routes
+// POST /api/v1/entries/generate - Generate KPI entries for timeframe
+router.post('/generate', EntryHandler.generateKPIEntries);
+
+// GET /api/v1/entries/whatsapp-ranking - Get WhatsApp ranking with contacts
+router.get('/whatsapp-ranking', EntryHandler.getWhatsAppRanking);
+
+// Cleanup routes
+// GET /api/v1/entries/orphaned-report - Get report of orphaned entries
+router.get('/orphaned-report', EntryHandler.getOrphanedEntriesReport);
+
+// POST /api/v1/entries/cleanup-orphaned - Cleanup orphaned entries
+router.post('/cleanup-orphaned', EntryHandler.cleanupOrphanedEntries);
+
+// Single user WhatsApp report
+// GET /api/v1/entries/single-user-report/:entryId - Get detailed WhatsApp report for single user
+router.get(
+  '/single-user-report/:entryId',
+  EntryHandler.getSingleUserWhatsAppReport
+);
 
 // GET /api/v1/entries/:id - Get a specific entry
 router.get('/:id', EntryHandler.getEntryById);
@@ -74,5 +104,8 @@ router.get(
 
 // GET /api/v1/entries/summary/:employeeId - Get entry summary for employee
 router.get('/summary/:employeeId', EntryHandler.getEntrySummaryForEmployee);
+
+// GET /api/v1/entries/pdf/:department - Generate PDF report for department
+router.get('/pdf/:department', EntryHandler.generateDepartmentPDF);
 
 export default router;

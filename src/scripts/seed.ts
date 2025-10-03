@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 import env from '../configs/env';
+import password from '../lib/password';
 
 // Define the schemas for seeding
 const userSchema = new mongoose.Schema(
@@ -31,15 +31,13 @@ const accountSchema = new mongoose.Schema(
   }
 );
 
-const UserModel = mongoose.model('User', userSchema);
-const AccountModel = mongoose.model('Account', accountSchema);
+const UserModel = mongoose.model('user', userSchema);
+const AccountModel = mongoose.model('account', accountSchema);
 
 async function seedDatabase() {
   try {
     // Connect to MongoDB
-    const mongoUri =
-      env.MONGO_URI ||
-      `mongodb://${env.MONGO_INITDB_ROOT_USERNAME}:${env.MONGO_INITDB_ROOT_PASSWORD}@${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_INITDB_ROOT_DATABASE}`;
+    const mongoUri = env.MONGO_URI!;
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB');
 
@@ -48,9 +46,8 @@ async function seedDatabase() {
     await AccountModel.deleteMany({});
     console.log('Cleared existing seed data');
 
-    // Use the exact password hash from the original data
-    const hashedPassword =
-      '$2b$12$hlTHiN0JEUoDHsEDDid5huW1NMVxutYl3p/JlwXj7zlhEfzpYfQ6S';
+    // Hash the default password
+    const hashedPassword = await password.hash('admin1234');
 
     // Create user
     const user = new UserModel({
