@@ -226,11 +226,11 @@ const kpiTemplateVersionSchema = new mongoose.Schema<KPITemplateVersion>(
 
 // Models
 export const KPITemplateModel = mongoose.model(
-  'tb_kpi_template',
+  'tb_kpi_templates',
   kpiTemplateSchema
 );
 export const KPITemplateVersionModel = mongoose.model(
-  'tb_kpi_template_version',
+  'tb_kpi_template_versions',
   kpiTemplateVersionSchema
 );
 

@@ -177,6 +177,6 @@ entrySchema.index({ month: 1, year: 1 });
 entrySchema.index({ status: 1 });
 
 // Model
-export const EntryModel = mongoose.model('tb_kpi_entry', entrySchema);
+export const EntryModel = mongoose.model('tb_kpi_entries', entrySchema);
 
 // Export schema for validation

@@ -209,7 +209,11 @@ export class EntryService {
         year,
         status: 'generated',
       };
+      console.log(`Getting entries for month: ${month}, year: ${year}`);
+
       const entries = await EntryModel.find(entryQuery).lean();
+
+      console.log(`Total entries: ${entries.length}`);
 
       // Build full enriched list for ranking (employee + template + score)
       const employeeIds = [...new Set(entries.map((e) => e.employeeId))];

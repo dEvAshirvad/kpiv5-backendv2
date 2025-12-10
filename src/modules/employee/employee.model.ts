@@ -47,4 +47,4 @@ const employeeSchema = new mongoose.Schema<Employee>(
   }
 );
 
-export const EmployeeModal = mongoose.model('tb_employee', employeeSchema);
+export const EmployeeModal = mongoose.model('tb_employees', employeeSchema);

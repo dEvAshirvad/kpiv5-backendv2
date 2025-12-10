@@ -63,7 +63,9 @@ function formatPhoneNumber(phone: string): string | null {
 function createKPISummary(values: any[]): string {
   if (!values || values.length === 0) return 'No KPI data available';
 
-  return values.map((kpi) => `${kpi.key} : ${kpi.score}`).join(' | ');
+  return values
+    .map((kpi) => `${kpi.key} : ${kpi.score.toFixed(2)}`)
+    .join(' | ');
 }
 
 // Function to create top performers summary
