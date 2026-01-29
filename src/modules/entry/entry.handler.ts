@@ -3,6 +3,7 @@ import { EntryService } from './entry.services';
 import Respond from '@/lib/respond';
 import logger from '@/configs/logger';
 import APIError from '@/lib/errors/APIError';
+import { paramStr } from '@/lib/param';
 
 export class EntryHandler {
   // Create entry
@@ -77,7 +78,7 @@ export class EntryHandler {
   // Get entry by ID
   static async getEntryById(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const entry = await EntryService.getEntryById(id);
       if (!entry) {
@@ -147,7 +148,7 @@ export class EntryHandler {
   // Update entry
   static async updateEntry(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
       const updates = req.body;
 
       const entry = await EntryService.updateEntry(id, updates);
@@ -169,7 +170,7 @@ export class EntryHandler {
   // Delete entry
   static async deleteEntry(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const entry = await EntryService.deleteEntry(id);
       if (!entry) {
@@ -199,7 +200,7 @@ export class EntryHandler {
   // Get entries by employee
   static async getEntriesByEmployee(req: Request, res: Response) {
     try {
-      const { employeeId } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
 
       const entries = await EntryService.getEntriesByEmployee(employeeId);
       Respond(
@@ -219,7 +220,7 @@ export class EntryHandler {
   // Get entries by template
   static async getEntriesByTemplate(req: Request, res: Response) {
     try {
-      const { templateId } = req.params;
+      const templateId = paramStr(req.params.templateId);
 
       const entries = await EntryService.getEntriesByTemplate(templateId);
       Respond(
@@ -239,11 +240,12 @@ export class EntryHandler {
   // Get entries by month and year
   static async getEntriesByMonthYear(req: Request, res: Response) {
     try {
-      const { month, year } = req.params;
+      const month = paramStr(req.params.month);
+      const year = paramStr(req.params.year);
 
       const entries = await EntryService.getEntriesByMonthYear(
-        parseInt(month),
-        parseInt(year)
+        parseInt(month, 10),
+        parseInt(year, 10)
       );
       Respond(
         res,
@@ -282,7 +284,7 @@ export class EntryHandler {
   // Update entry status
   static async updateEntryStatus(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
       const { status } = req.body;
 
       const entry = await EntryService.updateEntryStatus(id, status);
@@ -304,13 +306,16 @@ export class EntryHandler {
   // Check if entry exists
   static async checkEntryExists(req: Request, res: Response) {
     try {
-      const { employeeId, templateId, month, year } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
+      const templateId = paramStr(req.params.templateId);
+      const month = paramStr(req.params.month);
+      const year = paramStr(req.params.year);
 
       const exists = await EntryService.checkEntryExists(
         employeeId,
         templateId,
-        parseInt(month),
-        parseInt(year)
+        parseInt(month, 10),
+        parseInt(year, 10)
       );
 
       Respond(
@@ -333,13 +338,16 @@ export class EntryHandler {
     res: Response
   ) {
     try {
-      const { employeeId, templateId, month, year } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
+      const templateId = paramStr(req.params.templateId);
+      const month = paramStr(req.params.month);
+      const year = paramStr(req.params.year);
 
       const entry = await EntryService.getEntryByEmployeeTemplateMonthYear(
         employeeId,
         templateId,
-        parseInt(month),
-        parseInt(year)
+        parseInt(month, 10),
+        parseInt(year, 10)
       );
 
       if (!entry) {
@@ -369,13 +377,16 @@ export class EntryHandler {
   // Workflow: Get or create entry for employee, template, month, year
   static async getOrCreateEntryForWorkflow(req: Request, res: Response) {
     try {
-      const { employeeId, templateId, month, year } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
+      const templateId = paramStr(req.params.templateId);
+      const month = paramStr(req.params.month);
+      const year = paramStr(req.params.year);
 
       const result = await EntryService.getOrCreateEntryForWorkflow(
         employeeId,
         templateId,
-        parseInt(month),
-        parseInt(year)
+        parseInt(month, 10),
+        parseInt(year, 10)
       );
 
       Respond(
@@ -395,7 +406,8 @@ export class EntryHandler {
   // Workflow: Get available months and years for employee and template
   static async getAvailableMonthsYears(req: Request, res: Response) {
     try {
-      const { employeeId, templateId } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
+      const templateId = paramStr(req.params.templateId);
 
       const entries = await EntryService.getAvailableMonthsYears(
         employeeId,
@@ -418,7 +430,7 @@ export class EntryHandler {
   // Workflow: Get entry summary for employee
   static async getEntrySummaryForEmployee(req: Request, res: Response) {
     try {
-      const { employeeId } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
 
       const summary = await EntryService.getEntrySummaryForEmployee(employeeId);
       Respond(
@@ -679,7 +691,7 @@ export class EntryHandler {
   // Get single user WhatsApp report
   static async getSingleUserWhatsAppReport(req: Request, res: Response) {
     try {
-      const { entryId } = req.params;
+      const entryId = paramStr(req.params.entryId);
 
       if (!entryId) {
         return Respond(res, { message: 'Entry ID is required' }, 400);
@@ -777,7 +789,7 @@ export class EntryHandler {
   // Generate PDF report for department
   static async generateDepartmentPDF(req: Request, res: Response) {
     try {
-      const { department } = req.params;
+      const department = paramStr(req.params.department);
       const { month, year } = req.query;
 
       const result = await EntryService.generateDepartmentPDF(

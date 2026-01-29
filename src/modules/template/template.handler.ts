@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { TemplateService } from './template.services';
 import Respond from '@/lib/respond';
 import logger from '@/configs/logger';
+import { paramStr } from '@/lib/param';
 
 export class TemplateHandler {
   // Create template
@@ -48,7 +49,7 @@ export class TemplateHandler {
   // Get template by ID
   static async getTemplateById(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const template = await TemplateService.getTemplateById(id);
       if (!template) {
@@ -108,7 +109,7 @@ export class TemplateHandler {
   // Update template
   static async updateTemplate(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
       const updates = req.body;
 
       const template = await TemplateService.updateTemplate(id, updates);
@@ -130,7 +131,7 @@ export class TemplateHandler {
   // Delete template
   static async deleteTemplate(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const template = await TemplateService.deleteTemplate(id);
       if (!template) {
@@ -203,7 +204,7 @@ export class TemplateHandler {
   // Get template versions
   static async getTemplateVersions(req: Request, res: Response) {
     try {
-      const { templateId } = req.params;
+      const templateId = paramStr(req.params.templateId);
 
       const versions = await TemplateService.getTemplateVersions(templateId);
       Respond(
@@ -223,11 +224,12 @@ export class TemplateHandler {
   // Get specific template version
   static async getTemplateVersion(req: Request, res: Response) {
     try {
-      const { templateId, version } = req.params;
+      const templateId = paramStr(req.params.templateId);
+      const version = paramStr(req.params.version);
 
       const templateVersion = await TemplateService.getTemplateVersion(
         templateId,
-        parseInt(version)
+        parseInt(version, 10)
       );
       if (!templateVersion) {
         return Respond(
@@ -256,7 +258,7 @@ export class TemplateHandler {
   // Get templates by department
   static async getTemplatesByDepartment(req: Request, res: Response) {
     try {
-      const { departmentSlug } = req.params;
+      const departmentSlug = paramStr(req.params.departmentSlug);
 
       const templates =
         await TemplateService.getTemplatesByDepartment(departmentSlug);
@@ -299,7 +301,7 @@ export class TemplateHandler {
   // Get templates by role
   static async getTemplatesByRole(req: Request, res: Response) {
     try {
-      const { role } = req.params;
+      const role = paramStr(req.params.role);
 
       const templates = await TemplateService.getTemplatesByRole(role);
       Respond(
@@ -319,7 +321,7 @@ export class TemplateHandler {
   // Get templates by employee department
   static async getTemplatesByEmployeeDepartment(req: Request, res: Response) {
     try {
-      const { employeeId } = req.params;
+      const employeeId = paramStr(req.params.employeeId);
 
       const templates =
         await TemplateService.getTemplatesByEmployeeDepartment(employeeId);
@@ -340,7 +342,7 @@ export class TemplateHandler {
   // Generate form structure from template
   static async generateFormStructure(req: Request, res: Response) {
     try {
-      const { templateId } = req.params;
+      const templateId = paramStr(req.params.templateId);
 
       const formStructure =
         await TemplateService.generateFormStructure(templateId);

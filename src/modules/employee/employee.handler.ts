@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { EmployeeService } from './employee.services';
 import Respond from '@/lib/respond';
 import logger from '@/configs/logger';
+import { paramStr } from '@/lib/param';
 
 export class EmployeeHandler {
   static async createEmployee(req: Request, res: Response) {
@@ -32,7 +33,7 @@ export class EmployeeHandler {
 
   static async getEmployeeById(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const employee = await EmployeeService.getEmployeeById(id);
       if (!employee) {
@@ -86,7 +87,7 @@ export class EmployeeHandler {
 
   static async updateEmployee(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
       const updates = req.body;
 
       const employee = await EmployeeService.updateEmployee(id, updates);
@@ -117,7 +118,7 @@ export class EmployeeHandler {
 
   static async deleteEmployee(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const employee = await EmployeeService.deleteEmployee(id);
       if (!employee) {
@@ -147,7 +148,7 @@ export class EmployeeHandler {
   // Get employees by department
   static async getEmployeesByDepartment(req: Request, res: Response) {
     try {
-      const { department } = req.params;
+      const department = paramStr(req.params.department);
       const { page, limit, search } = req.query;
 
       const employees = await EmployeeService.getEmployeesByDepartment(
@@ -175,7 +176,7 @@ export class EmployeeHandler {
   // Get employees by department role
   static async getEmployeesByDepartmentRole(req: Request, res: Response) {
     try {
-      const { departmentRole } = req.params;
+      const departmentRole = paramStr(req.params.departmentRole);
       const { page, limit, search } = req.query;
 
       const employees = await EmployeeService.getEmployeesByDepartmentRole(

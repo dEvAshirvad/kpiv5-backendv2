@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { DepartmentService } from './department.services';
 import Respond from '@/lib/respond';
 import logger from '@/configs/logger';
+import { paramStr } from '@/lib/param';
 
 export class DepartmentHandler {
   static async createDepartment(req: Request, res: Response) {
@@ -37,7 +38,7 @@ export class DepartmentHandler {
 
   static async getDepartment(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const department = await DepartmentService.getDepartment(id);
       if (!department) {
@@ -103,7 +104,7 @@ export class DepartmentHandler {
 
   static async updateDepartment(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
       const { name, slug, logo, metadata } = req.body;
 
       const department = await DepartmentService.updateDepartment(id, {
@@ -145,7 +146,7 @@ export class DepartmentHandler {
 
   static async deleteDepartment(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = paramStr(req.params.id);
 
       const department = await DepartmentService.deleteDepartment(id);
       if (!department) {
