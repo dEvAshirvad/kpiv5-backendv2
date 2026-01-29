@@ -1,8 +1,8 @@
-=== Overview Script Log - Started at 2025-12-09T15:37:16.026Z ===
+=== Overview Script Log - Started at 2026-01-07T21:06:12.530Z ===
 
-Total entries: 532
+Total entries: 541
 --------------------------------
-Template: HO Template  (municipal-corporation-birgaon) 60
+Template: HO Template  (municipal-corporation-birgaon) 63
 Entries: 1
 --------------------------------
 --------------------------------
@@ -91,7 +91,7 @@ Entries: 4
 --------------------------------
 --------------------------------
 Template: TA-Template (prd-zila-panchayat-raipur-mgnrega) 100
-Entries: 31
+Entries: 30
 --------------------------------
 --------------------------------
 Template: Rojgar Sahayak MGNREGA Tilda (prd-zila-panchayat-raipur-mgnrega) 100
@@ -115,7 +115,7 @@ Entries: 6
 --------------------------------
 --------------------------------
 Template: VAS TEMPLATE  (veterinary-services) 20
-Entries: 16
+Entries: 15
 --------------------------------
 --------------------------------
 Template: BEO-2025 (distirict-education-office) 50
@@ -131,7 +131,7 @@ Entries: 25
 --------------------------------
 --------------------------------
 Template: Labour Inspector Temp (labour-department) 100
-Entries: 12
+Entries: 11
 --------------------------------
 --------------------------------
 Template: Rojgar Sahayak MGNREGA Dharsiwa (prd-zila-panchayat-raipur-mgnrega) 100
@@ -147,16 +147,32 @@ Entries: 17
 --------------------------------
 --------------------------------
 Template: PRINCIPAL-2025 (distirict-education-office) 50
-Entries: 11
+Entries: 13
 --------------------------------
 --------------------------------
 Template: IN-CHARGE PRINCIPAL-2025 (distirict-education-office) 45
-Entries: 8
+Entries: 11
 --------------------------------
 --------------------------------
 Template: ARO Template (raipur-municipal-corporation) 60
 Entries: 10
 --------------------------------
+--------------------------------
+Template: pension (social-welfare-department) 100
+Entries: 1
+--------------------------------
+--------------------------------
+Template: ASSISTANT GRADE 3 (social-welfare-department) 200
+Entries: 2
+--------------------------------
+--------------------------------
+Template: DATA ENTRY OPERATOR (social-welfare-department) 100
+Entries: 1
+--------------------------------
+--------------------------------
+Template: Community Health Center (health-department) 100
+Entries: 3
+--------------------------------
 General overview script completed successfully
-=== General Overview Script Log - Completed at 2025-12-09T15:37:17.060Z ===
+=== General Overview Script Log - Completed at 2026-01-07T21:06:14.017Z ===
 

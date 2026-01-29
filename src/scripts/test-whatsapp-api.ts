@@ -1,3 +1,10 @@
+// Change to project root directory to find .env file
+import path from 'path';
+
+// Go up from src/scripts to project root (2 levels up)
+const projectRoot = path.resolve(__dirname, '../../');
+process.chdir(projectRoot);
+
 import axios from 'axios';
 import { EntryModel } from '../modules/entry/entry.model';
 import { EntryService } from '../modules/entry/entry.services';
@@ -177,7 +184,7 @@ async function testWhatsAppAPI(dryRun: boolean = false) {
 
     // Get entries with status "generated" created after specific date
     const entries = await EntryModel.find({
-      month: 9,
+      month: 12,
       status: { $ne: 'generated' }, // filter out generated entries
     })
       .sort({ createdAt: 1 })
