@@ -1,4 +1,4 @@
-import { createAuthMiddleware } from 'better-auth/plugins';
+import { createAuthMiddleware } from 'better-auth/api';
 import { auth } from '../auth';
 import {
   APIError,
@@ -7,7 +7,7 @@ import {
 } from 'better-auth';
 
 export const authHooks = {
-  before: createAuthMiddleware(async (ctx) => {
+  before: createAuthMiddleware(async (ctx: GenericEndpointContext) => {
     if (ctx.path.startsWith('/admin/create-user')) {
       const session = await auth.api.getSession({
         headers: ctx.headers as Headers,

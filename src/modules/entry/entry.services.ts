@@ -5,6 +5,7 @@ import { EmployeeModal } from '../employee/employee.model';
 import { DepartmentModel } from '../departments/departments.model';
 import { db } from '@/configs/db/mongodb';
 import { FilterQuery } from 'mongoose';
+import { existsSync } from 'fs';
 import puppeteer from 'puppeteer';
 import logger from '@/configs/logger';
 
@@ -2290,6 +2291,7 @@ export class EntryService {
       const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        ...this.getPuppeteerExecutablePathConfig(),
       });
 
       const page = await browser.newPage();
@@ -2320,6 +2322,29 @@ export class EntryService {
       logger.error('Error generating department PDF:', error);
       throw error;
     }
+  }
+
+  // Generate HTML content for PDF
+  private static getPuppeteerExecutablePathConfig() {
+    const configuredPath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    if (configuredPath && existsSync(configuredPath)) {
+      return { executablePath: configuredPath };
+    }
+
+    const knownChromePaths = [
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      '/Applications/Chromium.app/Contents/MacOS/Chromium',
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/google-chrome',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium',
+    ];
+
+    const detectedPath = knownChromePaths.find((chromePath) =>
+      existsSync(chromePath)
+    );
+
+    return detectedPath ? { executablePath: detectedPath } : {};
   }
 
   // Generate HTML content for PDF
